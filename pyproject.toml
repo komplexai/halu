@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halu"
+version = "0.1.0"
+description = "Official Python client for the Komplex AI hallucination-detection API."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [{name = "Komplex AI", email = "support@komplexai.io"}]
+requires-python = ">=3.8"
+keywords = ["llm", "hallucination", "detection", "ai", "safety", "komplexai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = [
+    "requests>=2.25",
+    "typing-extensions>=4.0; python_version<'3.10'",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "responses>=0.23",
+]
+
+[project.urls]
+Homepage = "https://komplexai.io"
+Repository = "https://github.com/komplexai/halu"
+Documentation = "https://komplexai.io/guide"
+Issues = "https://github.com/komplexai/halu/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+halu = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: end-to-end tests against a live detector (deselected by default)",
+    "live_local: post-install smoke against localhost:3000 + localhost:8000 (deselected by default)",
+]
+addopts = "-m 'not live and not live_local'"
