@@ -39,9 +39,9 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://komplexai.io"
+Homepage = "https://detector.komplexai.io"
 Repository = "https://github.com/komplexai/halu"
-Documentation = "https://komplexai.io/guide"
+Documentation = "https://detector.komplexai.io/guide"
 Issues = "https://github.com/komplexai/halu/issues"
 
 [tool.setuptools.packages.find]

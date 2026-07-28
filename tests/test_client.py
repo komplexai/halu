@@ -20,7 +20,7 @@ from halu import (
 )
 
 LOCAL_URL = "http://localhost:3000"
-PROD_URL = "https://komplexai.io"
+PROD_URL = "https://api.komplexai.io"
 DETECT_LOCAL = f"{LOCAL_URL}/api/detect"
 DETECT_PROD = f"{PROD_URL}/api/detect"
 
@@ -203,7 +203,7 @@ def test_detect_402_raises_quota_error() -> None:
         json={
             "error": "quota_exceeded",
             "message": "Free quota exhausted",
-            "upgrade_url": "https://komplexai.io/account/billing",
+            "upgrade_url": "https://detector.komplexai.io/account/billing",
             "request_id": "req_quota",
         },
         status=402,
@@ -213,7 +213,7 @@ def test_detect_402_raises_quota_error() -> None:
         detect("text", api_key="sk_x", base_url=PROD_URL)
     err = exc_info.value
     assert err.quota_period == "2026-05"
-    assert err.upgrade_url == "https://komplexai.io/account/billing"
+    assert err.upgrade_url == "https://detector.komplexai.io/account/billing"
     assert err.request_id == "req_quota"
 
 

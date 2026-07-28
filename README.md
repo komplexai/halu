@@ -19,7 +19,7 @@ print(result.flag)             # False
 print(result.top_regime)       # NORMAL
 ```
 
-[Get a free API key](https://komplexai.io/account/keys) — no credit card.
+[Get a free API key](https://detector.komplexai.io/account/keys) — no credit card.
 
 ## Authentication
 
@@ -38,12 +38,19 @@ import halu
 result = halu.detect(
     "...",
     api_key="sk_...",
-    base_url="https://komplexai.io",   # default
+    base_url="https://api.komplexai.io",  # default
     timeout=30,                         # seconds
 )
 ```
 
 The `HALU_BASE_URL` and `HALU_TIMEOUT` environment variables override the defaults if no kwarg is supplied.
+
+## Scope & limits
+
+- **English natural-language responses.** Source code, structured output (JSON/XML), and non-English text are outside the trained range and may score unreliably.
+- **Up to 2,048 characters per field** (`response`, and the optional `prompt`). Longer inputs are rejected with `HaluInputError` (`input_too_long`, HTTP 400) — not truncated. Long-document detection is planned for a later release.
+- **Regimes (multiclass).** `top_regime` / `regime_scores` use 6 public classes: `NORMAL`, `FABRICATED`, `NEAR_FALSE`, `CF_AUTH`, `FALSE_REFUSAL`, and `Other`. See [Performance](https://detector.komplexai.io/performance) for per-regime accuracy.
+- **Free tier:** 3,700 API requests/month (plus 300 web-app detections/month). Higher limits on paid plans — see [Pricing](https://detector.komplexai.io/pricing). Failed requests are never billed.
 
 ## The three helpers
 
@@ -169,10 +176,10 @@ except halu.HaluError as e:
 
 ## Wire shape
 
-The library is a thin wrapper around `POST /api/detect`. For raw HTTP usage, see the canonical OpenAPI spec at <https://komplexai.io/api-docs>. A curl-equivalent of the quick-start call:
+The library is a thin wrapper around `POST /api/detect`. For raw HTTP usage, see the canonical OpenAPI spec at <https://detector.komplexai.io/api-docs>. A curl-equivalent of the quick-start call:
 
 ```bash
-curl -X POST https://komplexai.io/api/detect \
+curl -X POST https://api.komplexai.io/api/detect \
   -H "Authorization: Bearer $HALU_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"response": "The Eiffel Tower was built in 1889 by Gustav Eiffel.",
@@ -213,11 +220,11 @@ Python 3.8+. Tested on 3.8 / 3.9 / 3.10 / 3.11 / 3.12.
 
 ## Links
 
-- [komplexai.io](https://komplexai.io) — signup and dashboard
-- [`/api-docs`](https://komplexai.io/api-docs) — OpenAPI spec for raw HTTP usage
-- [`/guide`](https://komplexai.io/guide) — getting started
-- [`/performance`](https://komplexai.io/performance) — benchmark data
-- [`/pricing`](https://komplexai.io/pricing) — plans and limits
+- [detector.komplexai.io](https://detector.komplexai.io) — sign in, dashboard, API keys
+- [`/api-docs`](https://detector.komplexai.io/api-docs) — OpenAPI spec for raw HTTP usage
+- [`/guide`](https://detector.komplexai.io/guide) — getting started
+- [`/performance`](https://detector.komplexai.io/performance) — benchmark data
+- [`/pricing`](https://detector.komplexai.io/pricing) — plans and limits
 - [github.com/komplexai/halu](https://github.com/komplexai/halu) — source + [issues](https://github.com/komplexai/halu/issues)
 
 ## License

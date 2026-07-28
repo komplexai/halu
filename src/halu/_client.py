@@ -22,7 +22,7 @@ from ._errors import (
 )
 from ._types import DetectResult, RegimeScore
 
-DEFAULT_BASE_URL = "https://komplexai.io"
+DEFAULT_BASE_URL = "https://api.komplexai.io"
 DEFAULT_TIMEOUT = 30.0
 _DETECT_PATH = "/api/detect"
 
@@ -173,7 +173,7 @@ def detect(
         API key (``sk_*``). Falls back to ``HALU_API_KEY`` env var.
     base_url : str | None
         Base URL. Falls back to ``HALU_BASE_URL`` env var, then
-        ``https://komplexai.io``.
+        ``https://api.komplexai.io``.
     timeout : float | None
         Request timeout in seconds. Falls back to ``HALU_TIMEOUT`` env var,
         then ``30``.
@@ -217,7 +217,7 @@ def detect(
         raise HaluAuthError(
             message=(
                 "No API key found. Set HALU_API_KEY or pass api_key=. "
-                "Create a key at https://komplexai.io/account/keys."
+                "Create a key at https://detector.komplexai.io/account/keys."
             ),
         )
 
