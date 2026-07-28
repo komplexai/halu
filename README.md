@@ -49,7 +49,7 @@ The `HALU_BASE_URL` and `HALU_TIMEOUT` environment variables override the defaul
 
 - **English natural-language responses.** Source code, structured output (JSON/XML), and non-English text are outside the trained range and may score unreliably.
 - **Up to 2,048 characters per field** (`response`, and the optional `prompt`). Longer inputs are rejected with `HaluInputError` (`input_too_long`, HTTP 400) — not truncated. Long-document detection is planned for a later release.
-- **Regimes (multiclass).** `top_regime` / `regime_scores` use 6 public classes: `NORMAL`, `FABRICATED`, `NEAR_FALSE`, `CF_AUTH`, `FALSE_REFUSAL`, and `Other`. See [Performance](https://detector.komplexai.io/performance) for per-regime accuracy.
+- **Regimes (multiclass).** `top_regime` / `regime_scores` use 6 public classes — the *kind* of error: `NORMAL` (clean), `FABRICATED` (invented facts), `NEAR_FALSE` (misleading but technically true), `CF_AUTH` (fake/misattributed citations), `FALSE_REFUSAL` (refusing a reasonable request), and `Other`. See [Performance](https://detector.komplexai.io/performance) for per-regime accuracy.
 - **Free tier:** 3,700 API requests/month (plus 300 web-app detections/month). Higher limits on paid plans — see [Pricing](https://detector.komplexai.io/pricing). Failed requests are never billed.
 
 ## The three helpers
@@ -191,7 +191,7 @@ curl -X POST https://api.komplexai.io/api/detect \
 After `pip install halu` (or installing the wheel directly), you can run an end-to-end smoke test against a local detector deployment to verify the published library actually works on the real HTTP path:
 
 ```bash
-# Pre-reqs: ulmweb running at localhost:3000 + detector container at localhost:8000.
+# Pre-reqs: the web app running at localhost:3000 + the detector container at localhost:8000.
 # The test skips cleanly (exit 0) if either is down.
 pytest -m live_local tests/test_e2e_live_local.py
 ```

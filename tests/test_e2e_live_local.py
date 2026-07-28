@@ -11,7 +11,7 @@ Run with::
     pytest -m live_local tests/test_e2e_live_local.py
 
 Pre-flight:
-- ``http://localhost:3000`` must be reachable (the ulmweb dev server / Vercel
+- ``http://localhost:3000`` must be reachable (the web app dev server / Vercel
   proxy). The test SKIPS (exit 0, no failure) when it is not.
 - ``http://localhost:8000`` (the local detector container) must also be
   reachable. If not, the test SKIPS.
@@ -29,7 +29,7 @@ What this DOES not do:
 - It does not test rate-limit / quota paths (no real auth in local dev).
 
 Override the base URLs via env:
-- ``HALU_BASE_URL``    — ulmweb proxy (default ``http://localhost:3000``)
+- ``HALU_BASE_URL``    — web app proxy (default ``http://localhost:3000``)
 - ``HALU_DETECTOR_URL`` — detector container health probe
                          (default ``http://localhost:8000``)
 """
@@ -70,8 +70,8 @@ pytestmark = pytest.mark.live_local
 # ─── preflight ────────────────────────────────────────────────────────
 
 
-def _ulmweb_alive(url: str) -> bool:
-    """Return True when the ulmweb proxy at ``url`` responds to a probe.
+def _web_app_alive(url: str) -> bool:
+    """Return True when the web app proxy at ``url`` responds to a probe.
 
     We try ``/api/health`` first (cheap, no model load), and fall back to a
     minimal ``/api/detect`` POST if no health endpoint exists. The detector
@@ -115,9 +115,9 @@ def _preflight() -> None:
     We return (rather than fail) so CI doesn't false-alarm when the stack is
     legitimately down.
     """
-    if not _ulmweb_alive(BASE_URL):
+    if not _web_app_alive(BASE_URL):
         pytest.skip(
-            f"ulmweb not reachable at {BASE_URL}/api/health — "
+            f"web app not reachable at {BASE_URL}/api/health — "
             "start the dev server (`npm --prefix apps/web run dev`) and retry.",
             allow_module_level=True,
         )
