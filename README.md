@@ -13,13 +13,15 @@ pip install halu
 ```python
 import halu  # export HALU_API_KEY="sk_..."
 
-result = halu.detect("The Eiffel Tower was built in 1889 by Gustav Eiffel.")
-print(result.p_hallucination)  # 0.12
-print(result.flag)             # False
-print(result.top_regime)       # NORMAL
+result = halu.detect("The Eiffel Tower was built in 1889 by Thomas Edison.")
+print(result.p_hallucination)  # 0.87 — likely a hallucination
+print(result.flag)             # True
+print(result.top_regime)       # FABRICATED
 ```
 
 [Get a free API key](https://detector.komplexai.io/account/keys) — no credit card.
+
+> **First call slow or timing out?** The detector scales to zero when idle — that's how the free tier stays free — so the *first* request after a quiet period warms the model up and can take ~10–30s. Later calls are fast (sub-second). If a first call times out or returns a `503`, wait a few seconds and retry, or give cold-tolerant calls more headroom: `halu.detect(text, timeout=60)`. This is current free-tier behavior and improves as usage grows.
 
 ## Authentication
 
@@ -182,7 +184,7 @@ The library is a thin wrapper around `POST /api/detect`. For raw HTTP usage, see
 curl -X POST https://api.komplexai.io/api/detect \
   -H "Authorization: Bearer $HALU_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"response": "The Eiffel Tower was built in 1889 by Gustav Eiffel.",
+  -d '{"response": "The Eiffel Tower was built in 1889 by Thomas Edison.",
        "task": "multiclass"}'
 ```
 
@@ -206,7 +208,17 @@ HALU_DETECTOR_URL=http://my-host:8000 \
 
 The smoke verifies: every documented public name is importable; `detect()` flags a known hallucination and clears a clean fact with prompt context; `detect_or_raise` raises `HaluHallucinationFlagged` (with `.detection_result` attached) on flagged; `detect_or_warn` always returns and logs a warning when flagged; `regenerate_until_clean` exhausts cleanly with `raise` / `return_best` / `return_last` (with `.history` populated); and bad inputs raise `HaluInputError` client-side without burning a unit.
 
-## What's new in 0.1.0
+## What's new
+
+### 0.1.2
+
+- Documented the cold-start / first-call warm-up behavior on the free tier (docs only, no code change).
+
+### 0.1.1
+
+- Default endpoint repointed to `https://api.komplexai.io`.
+
+### 0.1.0
 
 - First real release — `detect()` + 3 helper functions.
 - Public surface: `detect`, `detect_or_raise`, `detect_or_warn`, `regenerate_until_clean`, `DetectResult`, `RegimeScore`, 8 error classes.
