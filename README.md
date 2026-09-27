@@ -188,6 +188,37 @@ curl -X POST https://api.komplexai.io/api/detect \
        "task": "multiclass"}'
 ```
 
+## MCP server (use it from Claude & agents)
+
+`halu` ships a [Model Context Protocol](https://modelcontextprotocol.io) server, so
+Claude Desktop, Claude Code, and other MCP clients can call the detector as a native
+tool — no code required.
+
+```bash
+pip install "halu[mcp]"
+export HALU_API_KEY=sk_...
+halu-mcp                     # or: python -m halu.mcp
+```
+
+Add it to your client (e.g. Claude Desktop `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "halu": {
+      "command": "halu-mcp",
+      "env": { "HALU_API_KEY": "sk_..." }
+    }
+  }
+}
+```
+
+The server exposes one tool, `detect_hallucination(response, prompt?, task?)`, which
+returns the calibrated probability, flag, and regime breakdown. Once connected, the
+client can call it on its own when a task needs a trustworthiness check; for
+*guaranteed* checking on every generation, call `halu.detect` from your agent loop
+directly (see the LangChain example in `examples/`).
+
 ## Post-install smoke test
 
 After `pip install halu` (or installing the wheel directly), you can run an end-to-end smoke test against a local detector deployment to verify the published library actually works on the real HTTP path:
@@ -209,6 +240,12 @@ HALU_DETECTOR_URL=http://my-host:8000 \
 The smoke verifies: every documented public name is importable; `detect()` flags a known hallucination and clears a clean fact with prompt context; `detect_or_raise` raises `HaluHallucinationFlagged` (with `.detection_result` attached) on flagged; `detect_or_warn` always returns and logs a warning when flagged; `regenerate_until_clean` exhausts cleanly with `raise` / `return_best` / `return_last` (with `.history` populated); and bad inputs raise `HaluInputError` client-side without burning a unit.
 
 ## What's new
+
+### 0.1.3
+
+- Added a built-in **MCP server**: `pip install "halu[mcp]"` then `halu-mcp` (or `python -m halu.mcp`). Exposes a `detect_hallucination` tool for Claude Desktop / Claude Code / other MCP clients.
+- Added `examples/` (LangChain integration + MCP) — see `examples/README.md`.
+- Fixed `__version__` (was reporting a stale value).
 
 ### 0.1.2
 

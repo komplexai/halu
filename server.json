@@ -1,0 +1,27 @@
+{
+  "$comment": "DRAFT — MCP registry manifest (server.json). Verify against the current MCP registry schema at https://registry.modelcontextprotocol.io before publishing; field names evolve.",
+  "name": "io.komplexai/halu",
+  "description": "A trust score for AI answers: score any LLM response for hallucination risk. Fact-check LLM output, add a RAG guardrail, or verify agent output — returns a calibrated probability plus the error-type regime.",
+  "version": "0.1.3",
+  "repository": {
+    "url": "https://github.com/komplexai/halu",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registry_type": "pypi",
+      "identifier": "halu",
+      "version": "0.1.3",
+      "runtime_hint": "halu-mcp",
+      "transport": { "type": "stdio" },
+      "environment_variables": [
+        {
+          "name": "HALU_API_KEY",
+          "description": "halu API key (sk_...). Free at https://detector.komplexai.io/account/keys",
+          "is_required": true,
+          "is_secret": true
+        }
+      ]
+    }
+  ]
+}

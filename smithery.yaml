@@ -1,0 +1,18 @@
+# Smithery configuration for the halu MCP server.
+# DRAFT — verify against current Smithery docs (https://smithery.ai/docs) before submitting;
+# the config format changes over time. This assumes the pip-installed `halu-mcp` CLI.
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required: ["haluApiKey"]
+    properties:
+      haluApiKey:
+        type: string
+        title: Komplex AI API key
+        description: "Your halu API key (sk_...). Get one free at https://detector.komplexai.io/account/keys"
+  commandFunction: |
+    (config) => ({
+      command: "halu-mcp",
+      env: { HALU_API_KEY: config.haluApiKey }
+    })
