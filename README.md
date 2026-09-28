@@ -241,6 +241,10 @@ The smoke verifies: every documented public name is importable; `detect()` flags
 
 ## What's new
 
+### 0.1.4
+
+- Pin the MCP extra to `mcp<2`. The `mcp` SDK 2.x renamed `FastMCP` → `MCPServer`; 0.1.3's unpinned extra pulled 2.x and broke `halu-mcp`. This restores a working server. (A 2.x migration will follow.)
+
 ### 0.1.3
 
 - Added a built-in **MCP server**: `pip install "halu[mcp]"` then `halu-mcp` (or `python -m halu.mcp`). Exposes a `detect_hallucination` tool for Claude Desktop / Claude Code / other MCP clients.

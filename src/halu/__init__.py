@@ -18,7 +18,7 @@ See https://github.com/komplexai/halu for full documentation.
 """
 from __future__ import annotations
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 from ._client import detect
 from ._errors import (
